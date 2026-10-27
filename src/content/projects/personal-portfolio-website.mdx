@@ -1,0 +1,28 @@
+---
+title: "Personal Portfolio Website"
+summary: "A fast, static portfolio built with Astro and Tailwind, with a Supabase-backed contact form — shipped on Vercel."
+year: 2026
+company: "Personal"
+role: "Developer"
+stack: ["Astro", "Tailwind CSS", "TypeScript", "MDX", "Supabase", "Vercel"]
+status: "public"
+featured: true
+order: 5
+draft: false
+liveUrl: "https://web-portofolio-imams.vercel.app"
+repoUrl: "https://github.com/imamutama/web-portofolio"
+---
+
+## Problem
+
+Needed a fast, maintainable portfolio to showcase QA automation work — one that loads quickly, is cheap to host, and can be updated by editing Markdown files rather than touching a database.
+
+## Approach
+
+Built as a fully static Astro site with Tailwind CSS and MDX content collections, shipping zero JavaScript by default. Project case studies live as Markdown files with a typed, validated schema. The contact form posts directly to Supabase's REST API, protected by row-level security (anonymous insert only).
+
+## Result
+
+- Static, fast-loading site deployed on Vercel.
+- Content updated via plain Markdown — no CMS, no database for content.
+- Supabase-backed contact form with no backend server required.
