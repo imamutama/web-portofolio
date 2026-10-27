@@ -1,44 +1,49 @@
 ---
 import { Check, Copy, ExternalLink, Github, Linkedin, Mail } from 'lucide-astro';
 import { site } from '../data/site';
+import ContactForm from './ContactForm.astro';
 ---
 
 <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-  <div
-    class="rounded-2xl border border-line bg-surface p-7"
-    data-reveal
-  >
-    <h3 class="text-h3 font-semibold tracking-tight text-ink">Let's talk</h3>
-    <p class="mt-3 max-w-[52ch] text-ink-muted">
-      Open to discussing automation frameworks, CI/CD, and AI-assisted testing. The fastest way to
-      reach me is email.
-    </p>
-
-    <div class="mt-6 flex flex-wrap items-center gap-3">
-      <a
-        href={`mailto:${site.email}`}
-        class="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-accent-ink transition-colors hover:bg-accent-hover"
-      >
-        <Mail size={16} />
-        Email me
-      </a>
-
-      <button
-        type="button"
-        id="copy-email"
-        data-email={site.email}
-        class="copy-btn inline-flex items-center gap-2 rounded-md border border-line bg-raised px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:border-accent-line hover:text-accent"
-      >
-        <Copy size={15} class="icon-copy" />
-        <Check size={15} class="icon-check text-accent" />
-        <span id="copy-email-label">Copy email</span>
-      </button>
+  <div class="rounded-2xl border border-line bg-surface p-7" data-reveal>
+    <h3 class="text-h3 font-semibold tracking-tight text-ink">Send a message</h3>
+    <p class="mt-2 text-sm text-ink-muted">I usually reply within a day or two.</p>
+    <div class="mt-6">
+      <ContactForm />
     </div>
-
-    <p class="mt-5 font-mono text-sm text-ink-faint">{site.email}</p>
   </div>
 
   <div class="flex flex-col gap-5" data-reveal>
+    <div class="rounded-2xl border border-line bg-surface p-7">
+      <h3 class="text-h3 font-semibold tracking-tight text-ink">Prefer email?</h3>
+      <p class="mt-3 max-w-[52ch] text-ink-muted">
+        Open to discussing automation frameworks, CI/CD, and AI-assisted testing.
+      </p>
+
+      <div class="mt-6 flex flex-wrap items-center gap-3">
+        <a
+          href={`mailto:${site.email}`}
+          class="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-accent-ink transition-colors hover:bg-accent-hover"
+        >
+          <Mail size={16} />
+          Email me
+        </a>
+
+        <button
+          type="button"
+          id="copy-email"
+          data-email={site.email}
+          class="copy-btn inline-flex items-center gap-2 rounded-md border border-line bg-raised px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:border-accent-line hover:text-accent"
+        >
+          <Copy size={15} class="icon-copy" />
+          <Check size={15} class="icon-check text-accent" />
+          <span id="copy-email-label">Copy email</span>
+        </button>
+      </div>
+
+      <p class="mt-5 font-mono text-sm text-ink-faint">{site.email}</p>
+    </div>
+
     <a
       href={site.github}
       target="_blank"

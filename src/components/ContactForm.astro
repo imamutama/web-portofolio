@@ -1,0 +1,190 @@
+---
+import { site } from '../data/site';
+
+const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+const isConfigured = Boolean(supabaseUrl && supabaseKey);
+---
+
+<form id="contact-form" data-email={site.email} novalidate>
+  {
+    !isConfigured && (
+      <p
+        class="mb-5 rounded-md border border-line bg-raised px-4 py-3 font-mono text-sm text-ink-muted"
+        role="status"
+      >
+        Contact form is not configured yet.
+      </p>
+    )
+  }
+
+  <div class="space-y-5">
+    <div>
+      <label for="cf-name" class="field-label">Name</label>
+      <input
+        id="cf-name"
+        name="name"
+        type="text"
+        autocomplete="name"
+        required
+        disabled={!isConfigured}
+        aria-describedby="cf-name-error"
+        class="form-input"
+      />
+      <p id="cf-name-error" class="field-error" hidden></p>
+    </div>
+
+    <div>
+      <label for="cf-email" class="field-label">Email</label>
+      <input
+        id="cf-email"
+        name="email"
+        type="email"
+        autocomplete="email"
+        required
+        disabled={!isConfigured}
+        aria-describedby="cf-email-error"
+        class="form-input"
+      />
+      <p id="cf-email-error" class="field-error" hidden></p>
+    </div>
+
+    <div>
+      <label for="cf-message" class="field-label">Message</label>
+      <textarea
+        id="cf-message"
+        name="message"
+        rows={4}
+        required
+        disabled={!isConfigured}
+        aria-describedby="cf-message-error"
+        class="form-input resize-y"
+      ></textarea>
+      <p id="cf-message-error" class="field-error" hidden></p>
+    </div>
+
+    <!-- Honeypot: hidden from humans and assistive tech, but fillable by bots. -->
+    <div class="sr-only" aria-hidden="true">
+      <label for="cf-company">Company</label>
+      <input id="cf-company" name="company" type="text" autocomplete="off" tabindex="-1" />
+    </div>
+
+    <button
+      type="submit"
+      id="cf-submit"
+      disabled={!isConfigured}
+      class="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-accent-ink transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
+    >
+      <span id="cf-submit-label">Send message</span>
+    </button>
+  </div>
+
+  <p id="cf-status" role="status" aria-live="polite" tabindex="-1" class="mt-5 text-sm" hidden></p>
+</form>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('#contact-form');
+  const statusEl = document.querySelector<HTMLParagraphElement>('#cf-status');
+  const submitBtn = document.querySelector<HTMLButtonElement>('#cf-submit');
+  const submitLabel = document.querySelector<HTMLSpanElement>('#cf-submit-label');
+
+  const url = import.meta.env.PUBLIC_SUPABASE_URL;
+  const key = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+
+  const field = (name: string) =>
+    form?.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement | null;
+
+  const setFieldError = (name: string, message: string) => {
+    field(name)?.setAttribute('aria-invalid', 'true');
+    const err = document.getElementById(`cf-${name}-error`);
+    if (err) {
+      err.textContent = message;
+      err.hidden = false;
+    }
+  };
+
+  const clearErrors = () => {
+    for (const name of ['name', 'email', 'message']) {
+      field(name)?.removeAttribute('aria-invalid');
+      const err = document.getElementById(`cf-${name}-error`);
+      if (err) {
+        err.textContent = '';
+        err.hidden = true;
+      }
+    }
+  };
+
+  const showStatus = (message: string, tone: 'ok' | 'error') => {
+    if (!statusEl) return;
+    statusEl.textContent = message;
+    statusEl.className = `mt-5 font-mono text-sm ${tone === 'error' ? 'text-danger' : 'text-accent'}`;
+    statusEl.hidden = false;
+    statusEl.focus();
+  };
+
+  const setLoading = (loading: boolean) => {
+    if (!submitBtn || !submitLabel) return;
+    submitBtn.disabled = loading;
+    submitBtn.setAttribute('aria-busy', String(loading));
+    submitLabel.textContent = loading ? 'Sending…' : 'Send message';
+  };
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    // Not configured — the fields are disabled server-side; bail out defensively.
+    if (!url || !key) return;
+
+    clearErrors();
+    if (statusEl) statusEl.hidden = true;
+
+    // Honeypot — if a bot filled it, silently pretend success.
+    if (field('company')?.value) {
+      form.reset();
+      showStatus('Thanks — your message has been sent.', 'ok');
+      return;
+    }
+
+    const name = field('name')?.value.trim() ?? '';
+    const email = field('email')?.value.trim() ?? '';
+    const message = field('message')?.value.trim() ?? '';
+
+    let valid = true;
+    const invalid = (n: string, msg: string) => {
+      setFieldError(n, msg);
+      valid = false;
+    };
+
+    if (!name) invalid('name', 'Please enter your name.');
+    if (!email) invalid('email', 'Please enter your email address.');
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) invalid('email', 'Please enter a valid email address.');
+    if (!message) invalid('message', 'Please enter a message.');
+
+    if (!valid) {
+      const first = ['name', 'email', 'message'].find((n) => field(n)?.getAttribute('aria-invalid') === 'true');
+      if (first) field(first)?.focus();
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch(`${url}/rest/v1/contacts`, {
+        method: 'POST',
+        headers: {
+          apikey: key,
+          Authorization: `Bearer ${key}`,
+          'Content-Type': 'application/json',
+          Prefer: 'return=minimal',
+        },
+        body: JSON.stringify({ name, email, message }),
+      });
+      if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+      form.reset();
+      showStatus('Thanks — your message has been sent.', 'ok');
+    } catch {
+      showStatus(`Couldn't send — please email me directly at ${form?.dataset.email ?? ''}.`, 'error');
+    } finally {
+      setLoading(false);
+    }
+  });
+</script>
