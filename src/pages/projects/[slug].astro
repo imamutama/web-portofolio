@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import { ArrowLeft, ArrowUpRight, Github } from 'lucide-astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects', ({ data }) =>
+    import.meta.env.PROD ? data.draft !== true : true,
+  );
+  return projects.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props as { entry: CollectionEntry<'projects'> };
+const { Content } = await render(entry);
+
+const { title, summary, year, company, role, stack, outcome, liveUrl, repoUrl, status } =
+  entry.data;
+
+const statusLabel: Record<string, string> = {
+  public: 'Public',
+  internal: 'Internal',
+  concept: 'Concept',
+};
+---
+
+<BaseLayout title={title} description={summary}>
+  <article class="border-b border-line">
+    <div class="mx-auto max-w-6xl px-6 py-14 sm:py-16">
+      <a
+        href="/projects"
+        class="group inline-flex items-center gap-2 text-sm text-ink-muted transition-colors hover:text-accent"
+      >
+        <ArrowLeft size={15} class="transition-transform group-hover:-translate-x-0.5" />
+        All projects
+      </a>
+
+      <div class="mt-8 flex flex-wrap items-center gap-3">
+        <span class="font-mono text-sm text-ink-faint">{year}</span>
+        {status !== 'public' && (
+          <span class="chip text-accent">{statusLabel[status] ?? status}</span>
+        )}
+        <span class="font-mono text-sm text-ink-faint">·</span>
+        <span class="font-mono text-sm text-ink-faint">{company}</span>
+        <span class="font-mono text-sm text-ink-faint">·</span>
+        <span class="font-mono text-sm text-ink-faint">{role}</span>
+      </div>
+
+      <h1 class="mt-5 max-w-4xl text-h2 font-semibold tracking-tight text-ink sm:text-title lg:text-display">
+        {title}
+      </h1>
+      <p class="mt-5 max-w-[72ch] text-body-lg text-ink-muted">{summary}</p>
+
+      {
+        stack.length > 0 && (
+          <ul class="mt-6 flex flex-wrap gap-2">
+            {stack.map((s) => (
+              <li class="chip">{s}</li>
+            ))}
+          </ul>
+        )
+      }
+
+      <div class="mt-8 flex flex-wrap gap-3">
+        {liveUrl && (
+          <a
+            href={liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 rounded-md border border-line bg-surface px-4 py-2 text-sm font-medium text-ink transition-colors hover:border-accent-line hover:text-accent"
+          >
+            Live site
+            <ArrowUpRight size={15} />
+          </a>
+        )}
+        {repoUrl && (
+          <a
+            href={repoUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 rounded-md border border-line bg-surface px-4 py-2 text-sm font-medium text-ink transition-colors hover:border-accent-line hover:text-accent"
+          >
+            <Github size={15} />
+            Source
+          </a>
+        )}
+      </div>
+    </div>
+  </article>
+
+  <div class="mx-auto max-w-6xl px-6 py-14 sm:py-16">
+    {
+      outcome && (
+        <aside class="mb-12 rounded-2xl border border-accent-line bg-accent-soft p-6">
+          <p class="font-mono text-sm uppercase tracking-wider text-accent">Outcome</p>
+          <p class="mt-2 text-body-lg font-medium text-ink">{outcome}</p>
+        </aside>
+      )
+    }
+
+    <div class="mdx">
+      <Content />
+    </div>
+  </div>
+</BaseLayout>

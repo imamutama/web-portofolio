@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import Experience from '../components/Experience.astro';
+import SkillGroups from '../components/SkillGroups.astro';
+import { GraduationCap, Languages, MapPin } from 'lucide-astro';
+import { profile } from '../data/profile';
+---
+
+<BaseLayout
+  title="About"
+  description={`${profile.headline} with ${profile.yearsExperience}+ years building automation frameworks and CI/CD pipelines across fintech and banking.`}
+>
+  <section class="border-b border-line">
+    <div class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+      <p class="eyebrow" data-reveal>About</p>
+      <h1 class="mt-4 text-title font-semibold tracking-tight text-ink sm:text-display" data-reveal>
+        Quality engineering, end to end
+      </h1>
+      <p class="mt-5 max-w-[72ch] text-body-lg text-ink-muted" data-reveal>
+        {profile.headline} based in {profile.location}. I turn slow manual regression into fast,
+        reliable CI — and build the tooling so teams can do it themselves.
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-[72ch] px-6 py-16 sm:py-20">
+    <div class="space-y-5 text-body-lg leading-relaxed text-ink-muted" data-reveal>
+      <p>
+        I've spent {profile.yearsExperience}+ years building automation frameworks and CI/CD
+        pipelines for fintech and banking teams — places where a slow, flaky regression suite
+        isn't just an annoyance, it's a business risk. My job is to make releases fast, predictable,
+        and safe.
+      </p>
+      <p>
+        The numbers I care about are concrete: 80% faster script execution, 95% code coverage.
+        Lately I've focused on AI assistants that automate the routine parts of mobile, web, and
+        API testing — so engineers spend their time on the hard cases, not the repetitive ones.
+      </p>
+    </div>
+
+    <div class="mt-8 flex flex-wrap items-center gap-2 text-sm text-ink-faint" data-reveal>
+      <span class="inline-flex items-center gap-1.5">
+        <MapPin size={14} class="text-accent" />
+        {profile.location}
+      </span>
+    </div>
+  </section>
+
+  <section class="border-t border-line bg-surface/40 py-16 sm:py-20">
+    <Section eyebrow="Experience" title="Where I've worked">
+      <Experience />
+    </Section>
+  </section>
+
+  <section class="border-t border-line py-16 sm:py-20">
+    <Section eyebrow="Skills" title="Tools & technologies">
+      <SkillGroups />
+    </Section>
+  </section>
+
+  <section class="border-t border-line bg-surface/40 py-16 sm:py-20">
+    <Section eyebrow="Background" title="Education & languages">
+      <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <div class="rounded-2xl border border-line bg-surface p-6" data-reveal>
+          <div class="flex items-center gap-3">
+            <span class="flex size-10 items-center justify-center rounded-lg border border-line bg-raised text-accent">
+              <GraduationCap size={20} />
+            </span>
+            <h3 class="font-mono text-sm uppercase tracking-wider text-ink-muted">Education</h3>
+          </div>
+          <ul class="mt-5 space-y-4">
+            {profile.education.map((edu) => (
+              <li>
+                <p class="font-medium text-ink">{edu.degree}</p>
+                <p class="mt-0.5 text-sm text-ink-muted">
+                  {edu.school} · {edu.year}
+                </p>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="rounded-2xl border border-line bg-surface p-6" data-reveal>
+          <div class="flex items-center gap-3">
+            <span class="flex size-10 items-center justify-center rounded-lg border border-line bg-raised text-accent">
+              <Languages size={20} />
+            </span>
+            <h3 class="font-mono text-sm uppercase tracking-wider text-ink-muted">Languages</h3>
+          </div>
+          <ul class="mt-5 flex flex-wrap gap-2">
+            {profile.languages.map((lang) => (
+              <li class="chip">{lang}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </Section>
+  </section>
+</BaseLayout>

@@ -1,0 +1,24 @@
+# build output
+dist/
+
+# generated types
+.astro/
+
+# dependencies
+node_modules/
+
+# environment
+.env
+.env.*
+!.env.example
+
+# logs
+npm-debug.log*
+pnpm-debug.log*
+bun.lockb
+
+# OS
+.DS_Store
+
+# local source CV (contains personal contact info — keep out of the public repo)
+/Imam_Setya_Utama_CV_Professional.pdf

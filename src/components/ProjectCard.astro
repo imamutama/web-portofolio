@@ -1,0 +1,92 @@
+---
+import { ArrowUpRight } from 'lucide-astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'projects'>;
+  variant?: 'default' | 'lead';
+}
+
+const { entry, variant = 'default' } = Astro.props;
+const { title, summary, year, company, role, stack, status } = entry.data;
+const href = `/projects/${entry.id}`;
+
+const statusLabel: Record<string, string> = {
+  public: 'Public',
+  internal: 'Internal',
+  concept: 'Concept',
+};
+---
+
+{
+  variant === 'lead' ? (
+    <a
+      href={href}
+      class="card group flex h-full flex-col gap-6 overflow-hidden rounded-2xl border border-line bg-surface p-7 sm:flex-row sm:items-center sm:gap-10 lg:p-9"
+    >
+      <div class="flex-1">
+        <div class="flex items-center gap-3">
+          <span class="font-mono text-sm text-ink-faint">{year}</span>
+          {status !== 'public' && (
+            <span class="chip text-accent">{statusLabel[status] ?? status}</span>
+          )}
+        </div>
+        <h3
+          class="mt-4 text-h2 font-semibold tracking-tight text-ink transition-colors group-hover:text-accent sm:text-title"
+        >
+          {title}
+        </h3>
+        <p class="mt-3 max-w-[62ch] text-body-lg text-ink-muted">{summary}</p>
+        <p class="mt-4 text-sm text-ink-faint">
+          {company} · {role}
+        </p>
+      </div>
+
+      <div class="flex shrink-0 flex-col gap-4 sm:items-end">
+        <ul class="flex flex-wrap gap-2 sm:justify-end">
+          {stack.map((s) => (
+            <li class="chip">{s}</li>
+          ))}
+        </ul>
+        <span class="inline-flex items-center gap-1.5 text-sm font-medium text-accent">
+          Read case study
+          <ArrowUpRight size={15} class="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        </span>
+      </div>
+    </a>
+  ) : (
+    <a
+      href={href}
+      class="card group flex h-full flex-col rounded-2xl border border-line bg-surface p-6"
+    >
+      <div class="flex items-center justify-between gap-3">
+        <span class="font-mono text-sm text-ink-faint">{year}</span>
+        {status !== 'public' && (
+          <span class="chip text-accent">{statusLabel[status] ?? status}</span>
+        )}
+      </div>
+
+      <h3 class="mt-4 text-h3 font-semibold tracking-tight text-ink transition-colors group-hover:text-accent">
+        {title}
+      </h3>
+      <p class="mt-2.5 text-sm leading-relaxed text-ink-muted">{summary}</p>
+
+      <div class="mt-auto pt-5">
+        <ul class="flex flex-wrap gap-2">
+          {stack.map((s) => (
+            <li class="chip">{s}</li>
+          ))}
+        </ul>
+        <div class="mt-4 flex items-center gap-2 text-sm text-ink-faint">
+          <span class="truncate">{company}</span>
+          <span aria-hidden="true">·</span>
+          <span class="truncate">{role}</span>
+          <ArrowUpRight
+            size={15}
+            class="ml-auto shrink-0 text-ink-faint transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-accent"
+          />
+        </div>
+      </div>
+    </a>
+  )
+}

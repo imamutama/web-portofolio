@@ -1,0 +1,28 @@
+---
+import { Sun, Moon } from 'lucide-astro';
+---
+
+<button
+  type="button"
+  id="theme-toggle"
+  class="theme-toggle flex size-9 items-center justify-center rounded-md text-ink-muted transition-colors hover:text-ink"
+  aria-label="Toggle color theme"
+>
+  <Sun size={18} class="icon-sun" />
+  <Moon size={18} class="icon-moon" />
+</button>
+
+<script>
+  const toggle = document.getElementById('theme-toggle');
+  toggle?.addEventListener('click', () => {
+    const root = document.documentElement;
+    const current = root.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    const next = current === 'light' ? 'dark' : 'light';
+    root.setAttribute('data-theme', next);
+    try {
+      localStorage.setItem('theme', next);
+    } catch {
+      /* storage unavailable — theme just won't persist */
+    }
+  });
+</script>

@@ -1,0 +1,139 @@
+{
+  "name": "Imam Setya Utama",
+  "headline": "Senior QA Automation Engineer",
+  "location": "South Tangerang, Banten, Indonesia",
+  "email": "utamaimam04@gmail.com",
+  "links": {
+    "github": "https://github.com/imamutama",
+    "linkedin": "https://www.linkedin.com/in/imam-setya-utama-423752156/"
+  },
+  "summary": "Senior QA Automation Engineer with 8+ years building automation frameworks and CI/CD pipelines across fintech and banking. I turn slow manual regression into fast, reliable CI — with results like 80% faster execution and 95% code coverage. Currently building AI assistants for routine automation testing.",
+  "experience": [
+    {
+      "company": "EDTS",
+      "title": "Senior Specialist QA Automation",
+      "start": "2024-07",
+      "end": "present",
+      "bullets": [
+        "Designed and implemented automation regression tests achieving 80% code coverage.",
+        "Developed pattern framework for automation testing, enhancing script execution times by 80%.",
+        "Automated diverse QA test scenarios, enhancing system quality and optimizing resource allocation.",
+        "Developed AI assistant for automating mobile, web, and API tasks, streamlining workflow for automation efforts.",
+        "Produced visual aids for QA team to monitor and refine automation processes, improving overall testing visibility.",
+        "Created and maintained test libraries, simplifying access to test data for QA team members."
+      ]
+    },
+    {
+      "company": "Aplikasi Super",
+      "title": "Technical Quality Lead (Sr. QA Engineer Automation)",
+      "start": "2023-05",
+      "end": "2024-07",
+      "bullets": [
+        "Achieved 95% code coverage through design and implementation of regression tests.",
+        "Implemented an automated QA workflow that improved script execution times by 50%.",
+        "Automated several key QA test scenarios, saving time and resources.",
+        "Enhanced automation system usability through development and maintenance of comprehensive test libraries.",
+        "Developed visual aids for QA team to track automation processes effectively."
+      ]
+    },
+    {
+      "company": "Alami Sharia",
+      "title": "Senior Software Development Engineer in Test",
+      "start": "2021-06",
+      "end": "2023-05",
+      "bullets": [
+        "Reached 90% code coverage by implementing automation regression tests, boosting reliability.",
+        "Executed automated scripts during development phases, enhancing software testing efficiency and reducing manual effort.",
+        "Developed tailored automated testing solutions to meet specific software requirements, improving test coverage and reliability.",
+        "Initiated continuous integration from GitHub Actions for efficient mobile, web, and API testing.",
+        "Worked alongside development teams for detailed assessments of released software products.",
+        "Mapped test data to user expectations, ensuring strict adherence to product quality standards and enhancing overall user satisfaction.",
+        "Applied debugging techniques efficiently to tackle test-related problems."
+      ]
+    },
+    {
+      "company": "CT Corp Digital",
+      "title": "Software Test Engineer",
+      "start": "2021-03",
+      "end": "2021-06",
+      "bullets": [
+        "Developed automated test scripts to enable instant validation of software modifications.",
+        "Identified and resolved multiple software code bugs, improving overall application stability.",
+        "Developed comprehensive testing strategy for new software application to ensure quality and reliability.",
+        "Engineered tools for analyzing and debugging software failures.",
+        "Drafted detailed bug reports to document testing issues, facilitating effective communication with development team."
+      ]
+    },
+    {
+      "company": "PT BRI, Tbk (Persero)",
+      "title": "Software Quality Assurance Engineer",
+      "start": "2020-02",
+      "end": "2021-03",
+      "bullets": [
+        "Created automated test scripts for immediate validation of software changes.",
+        "Established comprehensive testing strategy for new software application to ensure quality and functionality.",
+        "Identified and resolved multiple bugs in existing software code, enhancing overall software stability.",
+        "Developed tools to analyze and troubleshoot software failures.",
+        "Drafted detailed bug reports to document issues encountered during testing, facilitating quicker resolution and improving communication with development team."
+      ]
+    },
+    {
+      "company": "PT Asuransi Jasa Tania, Tbk",
+      "title": "Software Engineer",
+      "start": "2019-02",
+      "end": "2020-03",
+      "bullets": [
+        "Developed and deployed software applications and websites to enhance staff utilization.",
+        "Implemented user-friendly databases to streamline data access.",
+        "Drafted programming codes for IT projects in accordance with industry standards.",
+        "Monitored program performance and generated reports to pinpoint issues.",
+        "Provided technical support to staff, troubleshooting computer and software challenges."
+      ]
+    },
+    {
+      "company": "Indocyber Global Technology",
+      "title": "Java Programmer",
+      "start": "2017-10",
+      "end": "2018-09",
+      "bullets": [
+        "Developed and deployed server-side components with Java.",
+        "Implemented RESTful APIs for services integration.",
+        "Debugged Java code, resolving technical issues to ensure application stability and performance.",
+        "Optimized existing code to improve performance.",
+        "Developed web application using HTML, Java, and CSS, enhancing user experience and functionality."
+      ]
+    }
+  ],
+  "skills": [
+    "Selenium",
+    "Appium",
+    "Cypress",
+    "WebdriverIO",
+    "Playwright",
+    "Katalon Studio",
+    "RestAssured",
+    "Mocha-Chai",
+    "Cucumber BDD",
+    "TestNG",
+    "Java",
+    "JavaScript",
+    "TypeScript",
+    "CI/CD",
+    "Continuous Integration",
+    "Git",
+    "Bitbucket / Actions",
+    "Atlassian JIRA",
+    "K6",
+    "Gatling",
+    "Test Rails",
+    "AI Agent"
+  ],
+  "education": [
+    {
+      "degree": "Bachelor's Degree, Information Systems",
+      "school": "Gunadarma University",
+      "year": 2017
+    }
+  ],
+  "languages": ["English", "Bahasa Indonesia"]
+}

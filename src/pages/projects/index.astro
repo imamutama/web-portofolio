@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectGrid from '../../components/ProjectGrid.astro';
+import { getCollection } from 'astro:content';
+
+const projects = await getCollection('projects', ({ data }) =>
+  import.meta.env.PROD ? data.draft !== true : true,
+);
+
+const sorted = projects.sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout
+  title="Case studies"
+  description="Automation frameworks, CI/CD pipelines, and AI-assisted testing — case studies from 8+ years in fintech and banking."
+>
+  <section class="border-b border-line">
+    <div class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+      <p class="eyebrow" data-reveal>Work</p>
+      <h1 class="mt-4 text-title font-semibold tracking-tight text-ink sm:text-display" data-reveal>
+        Case studies
+      </h1>
+      <p class="mt-5 max-w-[72ch] text-body-lg text-ink-muted" data-reveal>
+        Automation frameworks, CI/CD pipelines, and AI-assisted testing — the systems I've built
+        to make releases faster and more reliable.
+      </p>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-6 py-16 sm:py-20">
+    {
+      sorted.length > 0 ? (
+        <ProjectGrid projects={sorted} />
+      ) : (
+        <div class="rounded-2xl border border-dashed border-line p-10 text-center">
+          <p class="font-mono text-sm text-ink-faint">No case studies published yet.</p>
+          <p class="mx-auto mt-2 max-w-[48ch] text-sm text-ink-muted">
+            Detailed write-ups are in progress and will appear here as they're finalized.
+          </p>
+        </div>
+      )
+    }
+  </section>
+</BaseLayout>

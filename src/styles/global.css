@@ -1,0 +1,342 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   Theme tokens — dark-mode-first, switched via data-theme on <html>.
+   The raw runtime vars live here; Tailwind color names are mapped
+   to them below via `@theme inline` so utilities resolve live.
+   ============================================================ */
+:root {
+  color-scheme: dark;
+
+  --page: #0a0a0c;
+  --surface: #131316;
+  --raised: #1b1b20;
+  --line: #26262d;
+  --grid: rgba(255, 255, 255, 0.045);
+
+  --ink: #e8e8ec;
+  --ink-muted: #a6a6b0;
+  --ink-faint: #83838e;
+
+  --accent: #34d399;
+  --accent-hover: #6ee7b7;
+  --accent-ink: #04211a;
+  --accent-soft: rgba(52, 211, 153, 0.09);
+  --accent-line: rgba(52, 211, 153, 0.32);
+
+  --card-shadow: rgba(0, 0, 0, 0.55);
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --page: #fafafb;
+  --surface: #ffffff;
+  --raised: #f3f3f6;
+  --line: #e5e5ea;
+  --grid: rgba(0, 0, 0, 0.05);
+
+  --ink: #19191c;
+  --ink-muted: #55555e;
+  --ink-faint: #74747d;
+
+  --accent: #047857;
+  --accent-hover: #065f46;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(4, 120, 87, 0.07);
+  --accent-line: rgba(4, 120, 87, 0.3);
+
+  --card-shadow: rgba(24, 24, 40, 0.1);
+}
+
+/* Static tokens — fonts + fixed type scale (64 / 48 / 32 / 24 / 18 / 16 / 14). */
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:
+    'JetBrains Mono Variable', ui-monospace, 'SF Mono', 'Cascadia Code', 'Roboto Mono', monospace;
+
+  --text-display: 4rem;
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.03em;
+
+  --text-title: 3rem;
+  --text-title--line-height: 1.08;
+  --text-title--letter-spacing: -0.025em;
+
+  --text-h2: 2rem;
+  --text-h2--line-height: 1.2;
+  --text-h2--letter-spacing: -0.02em;
+
+  --text-h3: 1.5rem;
+  --text-h3--line-height: 1.3;
+  --text-h3--letter-spacing: -0.012em;
+
+  --text-body-lg: 1.125rem;
+  --text-body-lg--line-height: 1.65;
+}
+
+/* Runtime-switched color tokens → Tailwind color utilities. */
+@theme inline {
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-line: var(--line);
+
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-line: var(--accent-line);
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    background-color: var(--page);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ============================================================
+   Motion patterns (3 total):
+   1. data-reveal fade-up (IntersectionObserver, progressive)
+   2. .card hover lift
+   3. .pulse-dot status indicator
+   ============================================================ */
+
+/* 1. Reveal — hidden only when JS is confirmed (`.js` set by inline head script). */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.js [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+[data-reveal-delay='1'] {
+  transition-delay: 90ms;
+}
+[data-reveal-delay='2'] {
+  transition-delay: 180ms;
+}
+[data-reveal-delay='3'] {
+  transition-delay: 270ms;
+}
+
+/* 2. Card hover lift. */
+.card {
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+.card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-line);
+  box-shadow: 0 16px 40px -24px var(--card-shadow);
+}
+
+/* 3. Status dot pulse. */
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+.pulse-dot {
+  animation: pulse-dot 2.4s ease-in-out infinite;
+}
+
+/* ------------------------------------------------------------
+   Small reusable pieces
+   ------------------------------------------------------------ */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  background-color: var(--raised);
+  color: var(--ink-muted);
+  border-radius: 0.375rem;
+  padding: 0.125rem 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Subtle blueprint grid for hero band. */
+.grid-bg {
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* Theme toggle icon visibility. */
+.theme-toggle .icon-sun {
+  display: none;
+}
+[data-theme='dark'] .theme-toggle .icon-sun {
+  display: block;
+}
+[data-theme='dark'] .theme-toggle .icon-moon {
+  display: none;
+}
+
+/* Copy-email button feedback. */
+.copy-btn .icon-check {
+  display: none;
+}
+.copy-btn.copied .icon-check {
+  display: block;
+}
+.copy-btn.copied .icon-copy {
+  display: none;
+}
+
+/* ------------------------------------------------------------
+   MDX prose (no typography plugin) — h2 / h3 / p / ul / blockquote / code
+   ------------------------------------------------------------ */
+.mdx {
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1.75;
+  max-width: 72ch;
+}
+.mdx > * + * {
+  margin-top: 1.25rem;
+}
+.mdx h2 {
+  font-size: 2rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  margin-top: 3rem;
+  scroll-margin-top: 6rem;
+}
+.mdx h3 {
+  font-size: 1.5rem;
+  line-height: 1.3;
+  letter-spacing: -0.012em;
+  font-weight: 600;
+  margin-top: 2rem;
+  scroll-margin-top: 6rem;
+}
+.mdx p {
+  line-height: 1.75;
+}
+.mdx strong {
+  font-weight: 650;
+}
+.mdx a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.mdx a:hover {
+  color: var(--accent-hover);
+}
+.mdx ul {
+  list-style: none;
+  padding-left: 1.25rem;
+}
+.mdx ul li {
+  position: relative;
+}
+.mdx ul li::before {
+  content: '›';
+  position: absolute;
+  left: -1.25rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+.mdx ul li + li {
+  margin-top: 0.5rem;
+}
+.mdx ol {
+  list-style: decimal;
+  padding-left: 1.25rem;
+}
+.mdx ol li + li {
+  margin-top: 0.5rem;
+}
+.mdx blockquote {
+  border-left: 2px solid var(--accent-line);
+  background-color: var(--accent-soft);
+  color: var(--ink-muted);
+  padding: 0.875rem 1.125rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  font-style: italic;
+}
+.mdx blockquote p {
+  margin: 0;
+}
+.mdx code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background-color: var(--raised);
+  border: 1px solid var(--line);
+  padding: 0.08em 0.35em;
+  border-radius: 0.3em;
+}
+.mdx pre {
+  background-color: var(--raised);
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+}
+.mdx pre code {
+  background: none;
+  border: none;
+  padding: 0;
+}
+.mdx hr {
+  border: none;
+  border-top: 1px solid var(--line);
+}

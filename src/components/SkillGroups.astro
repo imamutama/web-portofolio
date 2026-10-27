@@ -1,0 +1,22 @@
+---
+import { skillGroups } from '../data/skills';
+---
+
+<div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+  {
+    skillGroups.map((group, i) => (
+      <div
+        class="rounded-2xl border border-line bg-surface p-5"
+        data-reveal
+        data-reveal-delay={String((i % 3) + 1)}
+      >
+        <h3 class="font-mono text-sm uppercase tracking-wider text-accent">{group.group}</h3>
+        <ul class="mt-4 flex flex-wrap gap-2">
+          {group.items.map((item) => (
+            <li class="chip">{item}</li>
+          ))}
+        </ul>
+      </div>
+    ))
+  }
+</div>

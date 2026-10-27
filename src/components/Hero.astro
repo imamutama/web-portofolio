@@ -1,0 +1,53 @@
+---
+import { ArrowRight, Download } from 'lucide-astro';
+import { profile } from '../data/profile';
+
+const ctaPrimary = { label: 'View case studies', href: '/projects' };
+const ctaSecondary = { label: 'Download CV', href: '/cv.pdf' };
+---
+
+<section class="relative overflow-hidden border-b border-line">
+  <div class="grid-bg absolute inset-0" aria-hidden="true"></div>
+  <div class="relative mx-auto max-w-6xl px-6 py-20 sm:py-28 lg:py-32">
+    <p class="eyebrow" data-reveal>{profile.headline}</p>
+
+    <h1
+      class="mt-5 text-h2 font-semibold tracking-tight text-ink sm:text-title lg:text-display"
+      data-reveal
+      data-reveal-delay="1"
+    >
+      {profile.name}
+    </h1>
+
+    <p
+      class="mt-6 max-w-[72ch] text-h3 font-medium text-ink"
+      data-reveal
+      data-reveal-delay="2"
+    >
+      I turn slow manual regression into fast, reliable CI.
+    </p>
+
+    <p class="mt-4 max-w-[72ch] text-body-lg text-ink-muted" data-reveal data-reveal-delay="2">
+      8+ years across fintech and banking — currently building AI assistants for routine test
+      automation.
+    </p>
+
+    <div class="mt-10 flex flex-wrap items-center gap-3" data-reveal data-reveal-delay="3">
+      <a
+        href={ctaPrimary.href}
+        class="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-accent-ink transition-colors hover:bg-accent-hover"
+      >
+        {ctaPrimary.label}
+        <ArrowRight size={16} />
+      </a>
+      <a
+        href={ctaSecondary.href}
+        download
+        class="inline-flex items-center gap-2 rounded-md border border-line bg-surface px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:border-accent-line hover:text-accent"
+      >
+        <Download size={16} />
+        {ctaSecondary.label}
+      </a>
+    </div>
+  </div>
+</section>
